@@ -4,12 +4,12 @@ import br.com.fiap.domain.entity.Cliente;
 import br.com.fiap.infra.ConnectionFactory;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ClienteRepository implements Repository<Cliente, Long> {
-
-    private ClienteRepository clienteRepository = ClienteRepository.build();
 
     private ConnectionFactory factory;
 
@@ -29,10 +29,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
 
         List<Cliente> clientes = new ArrayList<>();
 
-        var sql = """
-                SELECT * FROM
-                NTX_CLIENTES
-                """;
+        var sql = "SELECT * FROM NTX_CLIENTE ";
 
         Connection conn = factory.getConnection();
         Statement st = null;
@@ -46,7 +43,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
                     var id = rs.getLong("ID_CLIENTE");
                     var nome = rs.getString("NOME");
                     var cpf = rs.getString("CPF");
-                    var nascimento = rs.getDate("NASCIMENTO");
+                    var nascimento = rs.getString("NASCIMENTO");
                     var email = rs.getString("EMAIL");
                     var telefone = rs.getString("TELEFONE");
                     clientes.add( new Cliente(id, nome, cpf, nascimento, email, telefone));
@@ -65,11 +62,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
 
         Cliente cliente = null;
 
-        var sql = """
-                SELECT *
-                FROM NTX_CLIENTE
-                WHERE ID_CLIENTE = ?
-                """;
+        var sql = "SELECT * FROM NTX_CLIENTE WHERE ID_CLIENTE = ?";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
@@ -84,10 +77,10 @@ public class ClienteRepository implements Repository<Cliente, Long> {
                     var idCliente = rs.getLong("ID_CLIENTE");
                     var nome = rs.getString("NOME");
                     var cpf = rs.getString("CPF");
-                    var nascimento = rs.getDate("NASCIMENTO");
+                    var nascimento = rs.getString("NASCIMENTO");
                     var email = rs.getString("EMAIL");
                     var telefone = rs.getString("TELEFONE");
-                    cliente = new Cliente(id, nome, cpf, nascimento, email, telefone);
+                    cliente = new Cliente(idCliente, nome, cpf, nascimento, email, telefone);
                 }
             }
         } catch (SQLException e) {
@@ -102,11 +95,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
     @Override
     public Cliente persist(Cliente cliente) {
 
-        var sql = """
-                INSERT INTO NTX_CLIENTES (ID_CLIENTE, NOME, CPF, NASCIMENTO, EMAIL, TELEFONE)
-                values
-                (SQ_CLIENTES.nextval, ?)
-                """;
+        var sql = "INSERT INTO NTX_CLIENTE (ID_CLIENTE, NOME, CPF, NASCIMENTO, EMAIL, TELEFONE) values (SQ_CLIENTE.nextval, ?,?,?,?,?,?)";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps =  null;
@@ -115,6 +104,10 @@ public class ClienteRepository implements Repository<Cliente, Long> {
         try {
             ps = conn.prepareStatement(sql, new String[] {"ID_CLIENTE"});
             ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getCPF());
+            ps.setString(3, cliente.getNascimento());
+            ps.setString(4, cliente.getEmail());
+            ps.setString(5, cliente.getTelefone());
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
             if (rs.next()){
@@ -139,11 +132,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
 
         Cliente cliente = null;
 
-        var sql = """
-                SELECT *
-                FROM NTX_CLIENTE
-                WHERE trim(upper(NOME)) = ?
-                """;
+        var sql = "SELECT * FROM NTX_CLIENTE WHERE trim(upper(NOME)) = ? ";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
@@ -159,7 +148,7 @@ public class ClienteRepository implements Repository<Cliente, Long> {
                     var idCliente = rs.getLong("ID_CLIENTE");
                     var nome = rs.getString("NOME");
                     var cpf = rs.getString("CPF");
-                    var nascimento = rs.getDate("NASCIMENTO");
+                    var nascimento = rs.getString("NASCIMENTO");
                     var email = rs.getString("EMAIL");
                     var telefone = rs.getString("TELEFONE");
                     cliente = new Cliente(idCliente, nome, cpf, nascimento, email, telefone);

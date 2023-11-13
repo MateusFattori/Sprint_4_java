@@ -30,10 +30,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
     public List<Bicicleta> findAll() {
         List<Bicicleta> bicicletas = new ArrayList<>();
 
-        var sql = """
-                SELECT *
-                FROM NTX_BICICLETAS
-                """;
+        var sql = "SELECT * FROM NTX_BICICLETAS";
 
         Connection conn = factory.getConnection();
         Statement st = null;
@@ -69,11 +66,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
 
         Bicicleta bicicleta = null;
 
-        var sql = """
-                SELECT *
-                FROM NTX_BICICLETA
-                WHERE ID_BICICLETA = ?
-                """;
+        var sql = "SELECT * FROM NTX_BICICLETA WHERE ID_BICICLETA = ?";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
@@ -108,12 +101,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
     @Override
     public Bicicleta persist(Bicicleta bicicleta) {
 
-        var sql = """
-                INSERT INTO NTX_BICICLETA
-                (ID_BICICLETA, NUMERO_DE_SERIE, MARCA, MODELO, TIPO, COR, VALOR, ID_CLIENTE)
-                VALUES
-                (SQ_BICICLETA.nextval, ?,?,?,?,?,?,?,?)
-                """;
+        var sql = "INSERT INTO NTX_BICICLETA (ID_BICICLETA, NUMERO_DE_SERIE, MARCA, MODELO, TIPO, COR, VALOR, ID_CLIENTE) VALUES (SQ_BICICLETA.nextval, ?,?,?,?,?,?,?,?)";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
@@ -152,11 +140,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
 
         Bicicleta bicicleta = null;
 
-        var sql = """
-                SELECT * 
-                FROM NTX_BICICLETA
-                WHERE trim(UPPER(NUMERO_DE_SERIE)) = ?
-                """;
+        var sql = "SELECT * FROM NTX_BICICLETA WHERE trim(UPPER(NUMERO_DE_SERIE)) = ?";
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
@@ -169,7 +153,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
 
             if (rs.isBeforeFirst()){
                 while (rs.next()){
-                    var idBicicleta = rs.getLong("ID_BICILETA");
+                    var idBicicleta = rs.getLong("ID_BICICALETA");
                     var numeroDeSerie = rs.getString("NUMERO_DE_SERIE");
                     var marca = rs.getString("MARCA");
                     var modelo = rs.getString("MODELO");

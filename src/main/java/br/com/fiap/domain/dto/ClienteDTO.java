@@ -4,6 +4,7 @@ import br.com.fiap.domain.repository.ClienteRepository;
 import br.com.fiap.domain.service.ClienteService;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public record ClienteDTO(
 
         String CPF,
 
-        Date nascimento,
+        String nascimento,
 
         String email,
 
@@ -32,7 +33,7 @@ public record ClienteDTO(
         c.setId(null);
         c.setNome(dto.nome);
         c.setCPF(dto.CPF);
-        c.setNacimento(dto.nascimento);
+        c.setNascimento(dto.nascimento);
         c.setEmail(dto.email);
         c.setTelefone(dto.telefone);
 
@@ -40,6 +41,6 @@ public record ClienteDTO(
     }
 
     public static ClienteDTO of(Cliente c){
-        return new ClienteDTO(c.getId(), c.getNome(), c.getCPF(), c.getNacimento(), c.getEmail(), c.getTelefone());
+        return new ClienteDTO(c.getId(), c.getNome(), c.getCPF(), c.getNascimento(), c.getEmail(), c.getTelefone());
     }
 }

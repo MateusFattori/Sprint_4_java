@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -17,11 +18,10 @@ public class Cliente {
 
     private String CPF;
 
-    private Date nacimento;
+    private String nascimento;
 
     private String email;
 
     private String telefone;
-
 
 }
